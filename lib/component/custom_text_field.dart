@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:my_calender_app/content/colors.dart';
 
 class CustomTextField extends StatelessWidget {
+  final String initialValue;
   final String label;
 
   // 시간과 내용 구분
@@ -13,6 +14,7 @@ class CustomTextField extends StatelessWidget {
 
   const CustomTextField({
     required this.onSaved,
+    required this.initialValue,
     required this.label, required this.isTime, Key? key})
       : super(key: key);
 
@@ -60,6 +62,7 @@ class CustomTextField extends StatelessWidget {
       onSaved: onSaved,
       cursorColor: Colors.grey,
       maxLines: isTime ? 1 : null,
+      initialValue: initialValue,
       // 세로 길이 늘리기
       expands: !isTime,
       keyboardType: isTime ? TextInputType.number : TextInputType.multiline,
@@ -73,6 +76,8 @@ class CustomTextField extends StatelessWidget {
             LengthLimitingTextInputFormatter(100)
       ],
       decoration: InputDecoration(
+        hintText: isTime ? '0 ~ 24': '스케줄 내용',
+        suffixText: isTime ? '시' : null,
         border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(8),
             borderSide: BorderSide(width: 0, style: BorderStyle.none)),
