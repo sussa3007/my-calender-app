@@ -30,6 +30,11 @@ class LocalDatabase extends _$LocalDatabase {
   Future<List<CategoryColor>> getCategoryColors() =>
       select(categoryColors).get();
 
+  Future<List<Schedule>> getSchedules(int year) =>
+      (select(schedules)
+        ..where((tbl) => tbl.date.year.equals(year)))
+          .get();
+
   Stream<List<ScheduleWithColor>> watchSchedules(DateTime dateTime) {
     final query = select(schedules).join([
       innerJoin(categoryColors, categoryColors.id.equalsExp(schedules.colorId))
@@ -49,6 +54,15 @@ class LocalDatabase extends _$LocalDatabase {
     // val..method 형태는 메소드가 적용된 val값을 리턴한다.
     // return (select(schedules)..where((tbl) => tbl.date.equals(dateTime))).watch();
   }
+
+  Future<int> removeSchedule(int id) =>
+      (delete(schedules)..where((tbl) => tbl.id.equals(id))).go();
+
+  Future<int> updateScheduleById(int id, SchedulesCompanion data) =>
+      (update(schedules)..where((tbl) => tbl.id.equals(id))).write(data);
+
+  Future<Schedule> getScheduleById(int id) =>
+      (select(schedules)..where((tbl) => tbl.id.equals(id))).getSingle();
 
   @override
   int get schemaVersion => 1;
