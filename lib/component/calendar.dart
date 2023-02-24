@@ -6,11 +6,13 @@ class Calendar extends StatelessWidget {
   final DateTime? selectedDay;
   final DateTime focusedDay;
   final OnDaySelected onDaySelected;
+  final List Function(DateTime day) eventLoader;
 
   const Calendar({
     required this.selectedDay,
     required this.onDaySelected,
     required this.focusedDay,
+    required this.eventLoader,
     Key? key}) : super(key: key);
 
   @override
@@ -29,7 +31,7 @@ class Calendar extends StatelessWidget {
       firstDay: DateTime(1800),
       lastDay: DateTime(3000),
       // 헤더 스타일
-      headerStyle: HeaderStyle(
+      headerStyle: const HeaderStyle(
         formatButtonVisible: false,
         titleCentered: true,
         titleTextStyle: TextStyle(
@@ -61,6 +63,11 @@ class Calendar extends StatelessWidget {
         outsideDecoration: BoxDecoration(
           shape: BoxShape.rectangle,
         ),
+        markersAnchor: 1,
+        markerDecoration: BoxDecoration(
+          color: PRIMARY_COLOR,
+          shape: BoxShape.circle
+        ),
       ),
       //특정 날짜 선택
       onDaySelected: onDaySelected,
@@ -73,6 +80,7 @@ class Calendar extends StatelessWidget {
             date.month == selectedDay!.month &&
             date.day == selectedDay!.day;
       },
+      eventLoader: eventLoader,
     );
   }
 }
